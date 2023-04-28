@@ -1,7 +1,7 @@
 import { posix } from "node:path";
 import { PassThrough } from "node:stream";
 import { setInterval, clearInterval } from "node:timers";
-import { getInput, getMultilineInput, getBooleanInput, setFailed, info } from "@actions/core";
+import { getInput, getMultilineInput, getBooleanInput, setFailed, info, debug } from "@actions/core";
 import { S3Client, GetObjectAttributesCommand } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { create as createTar } from "tar";
@@ -15,6 +15,8 @@ try {
   const gzip = getBooleanInput("gzip");
 
   const paths = await globby(path, { onlyFiles: false, markDirectories: true });
+
+  debug(`Matched file system paths: ${JSON.stringify(paths, null, 2)}`);
 
   // Filter out directories that are common prefixes.
   const files = paths.filter((a, i, arr) => {
@@ -38,9 +40,11 @@ try {
   info("Uploading...");
   const interval = setInterval(() => info("Still uploading..."), 10_000);
 
-  await upload.done();
+  const multipartUploadResponse = await upload.done();
 
-  const { ObjectSize: objectSize } = await s3.send(
+  debug(`multipartUploadResponse: ${JSON.stringify(multipartUploadResponse, null, 2)}`);
+
+  const getObjectAttributesResponse = await s3.send(
     new GetObjectAttributesCommand({
       Bucket: bucket,
       Key: key,
@@ -48,8 +52,12 @@ try {
     })
   );
 
+  debug(`getObjectAttributesResponse: ${JSON.stringify(getObjectAttributesResponse, null, 2)}`);
+
   clearInterval(interval);
   info("Upload complete.");
+
+  const { ObjectSize: objectSize } = getObjectAttributesResponse;
 
   if (objectSize !== undefined) {
     info(`Size of uploaded archive: ${Intl.NumberFormat("en").format(objectSize)} bytes`);
