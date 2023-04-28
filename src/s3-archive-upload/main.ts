@@ -1,7 +1,8 @@
 import { posix } from "node:path";
 import { PassThrough } from "node:stream";
 import { setInterval, clearInterval } from "node:timers";
-import { getInput, getMultilineInput, getBooleanInput, setFailed, info, debug } from "@actions/core";
+import { inspect } from "node:util";
+import { getInput, getMultilineInput, getBooleanInput, setFailed, info, debug, isDebug } from "@actions/core";
 import { S3Client, GetObjectAttributesCommand } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { create as createTar } from "tar";
@@ -14,9 +15,13 @@ try {
   const prefix = getInput("prefix");
   const gzip = getBooleanInput("gzip");
 
+  debug(`path: ${path}`);
+
   const paths = await globby(path, { onlyFiles: false, markDirectories: true });
 
-  debug(`Matched file system paths: ${JSON.stringify(paths, null, 2)}`);
+  if (isDebug()) {
+    debug(`Matched file system paths: ${inspect(paths)}`);
+  }
 
   // Filter out directories that are common prefixes.
   const files = paths.filter((a, i, arr) => {
@@ -42,7 +47,9 @@ try {
 
   const multipartUploadResponse = await upload.done();
 
-  debug(`multipartUploadResponse: ${JSON.stringify(multipartUploadResponse, null, 2)}`);
+  if (isDebug()) {
+    debug(`multipartUploadResponse: ${inspect(multipartUploadResponse)}`);
+  }
 
   const getObjectAttributesResponse = await s3.send(
     new GetObjectAttributesCommand({
@@ -52,7 +59,9 @@ try {
     })
   );
 
-  debug(`getObjectAttributesResponse: ${JSON.stringify(getObjectAttributesResponse, null, 2)}`);
+  if (isDebug()) {
+    debug(`getObjectAttributesResponse: ${inspect(getObjectAttributesResponse)}`);
+  }
 
   clearInterval(interval);
   info("Upload complete.");
