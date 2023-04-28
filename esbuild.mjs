@@ -12,6 +12,9 @@ const config = {
   platform: "node",
   target: "node16",
   mainFields: ["module", "main"],
+  banner: {
+    js: 'import { createRequire } from "module";const require = createRequire(import.meta.url);',
+  },
 };
 
 build(config)
