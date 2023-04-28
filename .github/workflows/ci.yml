@@ -16,11 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Configure github-actions[bot]
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-
       - name: Install dependencies
         run: yarn install --immutable
 
@@ -39,10 +34,12 @@ jobs:
             | xargs)
           echo "package_version=$package_version" >> $GITHUB_OUTPUT
 
-      - name: Commit build output
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Merge build output [skip-ci]
+      - name: Commit changes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git commit -am "Merge build output [skip-ci]"
+          git push
 
       - name: Create release
         run: gh release create v${{ steps.bump.outputs.package_version }} --generate-notes
