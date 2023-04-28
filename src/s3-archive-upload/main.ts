@@ -15,8 +15,6 @@ try {
   const prefix = getInput("prefix");
   const gzip = getBooleanInput("gzip");
 
-  debug(`path: ${path}`);
-
   const paths = await globby(path, { onlyFiles: false, markDirectories: true });
 
   if (isDebug()) {
