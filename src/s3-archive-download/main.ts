@@ -2,6 +2,7 @@ import type { Readable } from "node:stream";
 
 import { posix } from "node:path";
 import { setInterval, clearInterval } from "node:timers";
+import { inspect } from "node:util";
 import { getInput, setFailed, info, debug } from "@actions/core";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { extract as extractTar } from "tar";
@@ -23,7 +24,7 @@ try {
     })
   );
 
-  debug(`getObjectResponse: ${JSON.stringify(response, null, 2)}`);
+  debug(`getObjectResponse: ${inspect(response)}`);
 
   if (response.Body !== undefined) {
     const writeStream = extractTar({ cwd: process.cwd() });
