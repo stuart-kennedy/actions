@@ -1,0 +1,22 @@
+name: s3-archive-download
+description: Create a tar archive and upload it to a designated S3 bucket.
+inputs:
+  bucket:
+    description: Name of the destination bucket.
+    required: true
+  name:
+    description: The name to use for the S3 object key.
+    required: true
+  path:
+    description: One or more file or directory paths to archive and upload.
+    required: true
+  prefix:
+    description: Prefixed to the uploaded archive key.
+    required: false
+  gzip:
+    description: Compress the archive using gzip.
+    required: false
+    default: "false"
+runs:
+  using: node16
+  main: lib/s3-archive-upload/main.cjs

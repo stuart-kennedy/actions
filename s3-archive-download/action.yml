@@ -1,0 +1,15 @@
+name: s3-archive-download
+description: Download and extract an archive uploaded using s3-archive-upload.
+inputs:
+  bucket:
+    description: The same value used for `bucket` when uploading the archive.
+    required: true
+  name:
+    description: The same value used for `name` when uploading the archive.
+    required: true
+  prefix:
+    description: The same value used for `prefix` (if provided) when uploading the archive.
+    required: false
+runs:
+  using: node16
+  main: lib/s3-archive-download/main.cjs
