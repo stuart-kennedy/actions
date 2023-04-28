@@ -1,13 +1,14 @@
 import { build } from "esbuild";
-import glob from "globby";
+import { globby } from "globby";
 
 const config = {
   bundle: true,
   minify: true,
   charset: "utf8",
-  entryPoints: await glob("src/*/main.ts"),
+  entryPoints: await globby("src/*/main.ts"),
   outdir: "lib",
-  outExtension: { ".js": ".cjs" },
+  outExtension: { ".js": ".mjs" },
+  format: "esm",
   platform: "node",
   target: "node16",
   mainFields: ["module", "main"],

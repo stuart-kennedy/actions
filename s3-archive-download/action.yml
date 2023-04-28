@@ -12,4 +12,4 @@ inputs:
     required: false
 runs:
   using: node16
-  main: lib/s3-archive-download/main.cjs
+  main: lib/s3-archive-download/main.mjs
