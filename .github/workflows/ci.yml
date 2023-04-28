@@ -41,4 +41,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Merge build output [skip-ci]
-          tagging_message: v${{ steps.bump.outputs.package_version }}
+
+      - name: Create release
+        run: gh release create v${{ steps.bump.outputs.package_version }} --generate-notes
