@@ -8,7 +8,8 @@
     "type": "module",
     "scripts": {
         "lint": "eslint . --cache --cache-location=.cache",
-        "build": "rm -rf lib && tsc --build && node esbuild.mjs"
+        "type-check": "tsc --build",
+        "build": "yarn type-check && node esbuild.mjs"
     },
     "dependencies": {
         "@actions/core": "^1.10.0",

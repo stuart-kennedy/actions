@@ -1,5 +1,13 @@
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { rm } from "node:fs/promises";
 import { build } from "esbuild";
 import { globby } from "globby";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const OUT_DIR = "lib";
 
 const config = {
   bundle: true,
@@ -7,7 +15,7 @@ const config = {
   sourcemap: true,
   charset: "utf8",
   entryPoints: await globby("src/*/main.ts"),
-  outdir: "lib",
+  outdir: OUT_DIR,
   outExtension: { ".js": ".mjs" },
   format: "esm",
   platform: "node",
@@ -17,6 +25,9 @@ const config = {
     js: 'import { createRequire } from "module";const require = createRequire(import.meta.url);',
   },
 };
+
+// Clean previous build output.
+await rm(join(__dirname, OUT_DIR), { recursive: true, force: true });
 
 build(config)
   .then(({ warnings }) => {
