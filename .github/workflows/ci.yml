@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build
+    name: Build and release
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
