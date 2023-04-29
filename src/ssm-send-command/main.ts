@@ -67,7 +67,10 @@ try {
   const response = await waitCommandInvocationComplete(instanceId, commandId);
 
   clearInterval(timer);
-  info(`Remote command invocation completed with status: "${response.Status}". Fetching output...`);
+  info(`Remote command invocation completed with status: "${response.Status ?? "undefined"}". Fetching output...`);
+
+  // Add a slight delay to prevent returning before all logs are published to CloudWatch.
+  await scheduler.wait(3000);
 
   if (response.StandardOutputContent) {
     const messages = await getLogMessages(response, "stdout");
@@ -87,7 +90,7 @@ try {
     setOutput("exit-code", response.ResponseCode);
   }
 
-  info(`Remote command invocation has completed with exit code: ${response.ResponseCode}`);
+  info(`Remote command invocation has completed with exit code: ${response.ResponseCode ?? "undefined"}`);
 } catch (err) {
   if (err instanceof Error) setFailed(err);
 }
@@ -110,7 +113,7 @@ async function waitSsmAgent(instanceId: string, i = 0): Promise<void> {
 
   if (response.InstanceInformationList?.[0]?.PingStatus !== "Online") {
     await scheduler.wait(5000);
-    waitSsmAgent(instanceId, i + 1);
+    return waitSsmAgent(instanceId, i + 1);
   }
 }
 
@@ -153,19 +156,28 @@ async function getLogMessages(
   stream: "stdout" | "stderr",
   token?: string
 ): Promise<string[]> {
-  await scheduler.wait(1000);
+  const { DocumentName, CommandId, InstanceId, PluginName } = commandInvocationOutput;
 
-  const {
-    DocumentName: documentName,
-    CommandId: commandId,
-    InstanceId: instanceId,
-    PluginName: pluginName,
-  } = commandInvocationOutput;
+  if (!DocumentName) {
+    throw Error("DocumentName is undefined.");
+  }
+
+  if (!CommandId) {
+    throw Error("CommandId is undefined.");
+  }
+
+  if (!InstanceId) {
+    throw Error("InstanceId is undefined.");
+  }
+
+  if (!PluginName) {
+    throw Error("PluginName is undefined.");
+  }
 
   const response = await cloudWatchLogs.send(
     new GetLogEventsCommand({
-      logGroupName: "/aws/ssm/" + documentName,
-      logStreamName: `${commandId}/${instanceId}/${pluginName?.replace(":", "-")}/${stream}`,
+      logGroupName: "/aws/ssm/" + DocumentName,
+      logStreamName: `${CommandId}/${InstanceId}/${PluginName.replace(":", "-")}/${stream}`,
       startFromHead: true,
       nextToken: token,
     })
