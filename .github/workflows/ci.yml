@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ci
+
 jobs:
   build:
     name: Build
