@@ -7,6 +7,8 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { globby } from "globby";
 import { filterCommonPrefixes } from "../utils.ts";
 
+const s3 = new S3Client({});
+
 try {
   const bucket = getInput("bucket", { required: true });
   const path = getMultilineInput("path", { required: true });
@@ -20,8 +22,6 @@ try {
 
   // Filter out directories that are common prefixes.
   const files = filterCommonPrefixes(paths);
-
-  const s3 = new S3Client({});
 
   const responseMetadata = await Promise.all(
     files.map(async (path) => {

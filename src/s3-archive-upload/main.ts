@@ -9,6 +9,8 @@ import { create as createTar } from "tar";
 import { globby } from "globby";
 import { filterCommonPrefixes } from "../utils.ts";
 
+const s3 = new S3Client({});
+
 try {
   const bucket = getInput("bucket", { required: true });
   const name = getInput("name", { required: true });
@@ -25,7 +27,6 @@ try {
   // Filter out directories that are common prefixes.
   const files = filterCommonPrefixes(paths);
 
-  const s3 = new S3Client({});
   const key = posix.join(prefix, name);
   // Piping to PassThrough is required for compatibility with @aws-sdk/lib-storage.
   const stream = createTar({ gzip }, files).pipe(new PassThrough());
