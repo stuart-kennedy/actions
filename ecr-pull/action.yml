@@ -1,0 +1,15 @@
+name: ecr-pull
+description: Pull an image from an ECR repository.
+inputs:
+  repository-url:
+    description: An ECR repository URL.
+    required: true
+  image:
+    description: A remote docker image tag.
+    required: true
+  tags:
+    description: Additional tags to apply to the local image.
+    required: false
+runs:
+  using: node16
+  main: ../lib/ecr-pull/main.mjs
