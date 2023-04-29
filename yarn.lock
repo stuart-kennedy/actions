@@ -191,6 +191,50 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/client-ecr@npm:^3.321.1":
+  version: 3.321.1
+  resolution: "@aws-sdk/client-ecr@npm:3.321.1"
+  dependencies:
+    "@aws-crypto/sha256-browser": 3.0.0
+    "@aws-crypto/sha256-js": 3.0.0
+    "@aws-sdk/client-sts": 3.321.1
+    "@aws-sdk/config-resolver": 3.310.0
+    "@aws-sdk/credential-provider-node": 3.321.1
+    "@aws-sdk/fetch-http-handler": 3.310.0
+    "@aws-sdk/hash-node": 3.310.0
+    "@aws-sdk/invalid-dependency": 3.310.0
+    "@aws-sdk/middleware-content-length": 3.310.0
+    "@aws-sdk/middleware-endpoint": 3.310.0
+    "@aws-sdk/middleware-host-header": 3.310.0
+    "@aws-sdk/middleware-logger": 3.310.0
+    "@aws-sdk/middleware-recursion-detection": 3.310.0
+    "@aws-sdk/middleware-retry": 3.310.0
+    "@aws-sdk/middleware-serde": 3.310.0
+    "@aws-sdk/middleware-signing": 3.310.0
+    "@aws-sdk/middleware-stack": 3.310.0
+    "@aws-sdk/middleware-user-agent": 3.319.0
+    "@aws-sdk/node-config-provider": 3.310.0
+    "@aws-sdk/node-http-handler": 3.321.1
+    "@aws-sdk/protocol-http": 3.310.0
+    "@aws-sdk/smithy-client": 3.316.0
+    "@aws-sdk/types": 3.310.0
+    "@aws-sdk/url-parser": 3.310.0
+    "@aws-sdk/util-base64": 3.310.0
+    "@aws-sdk/util-body-length-browser": 3.310.0
+    "@aws-sdk/util-body-length-node": 3.310.0
+    "@aws-sdk/util-defaults-mode-browser": 3.316.0
+    "@aws-sdk/util-defaults-mode-node": 3.316.0
+    "@aws-sdk/util-endpoints": 3.319.0
+    "@aws-sdk/util-retry": 3.310.0
+    "@aws-sdk/util-user-agent-browser": 3.310.0
+    "@aws-sdk/util-user-agent-node": 3.310.0
+    "@aws-sdk/util-utf8": 3.310.0
+    "@aws-sdk/util-waiter": 3.310.0
+    tslib: ^2.5.0
+  checksum: 21a5c31a1be4f735724489e472745a53def03b1d8b43bb9cd17174dd2baff4e81bb15c6a5ef64b3175dbbd1fd185fe0497f239986782818587bee7663dc57da0
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/client-s3@npm:^3.309.0":
   version: 3.321.1
   resolution: "@aws-sdk/client-s3@npm:3.321.1"
@@ -1958,6 +2002,7 @@ __metadata:
     "@actions/github": ^5.1.1
     "@aws-sdk/abort-controller": ^3.0.0
     "@aws-sdk/client-cloudwatch-logs": ^3.321.1
+    "@aws-sdk/client-ecr": ^3.321.1
     "@aws-sdk/client-s3": ^3.309.0
     "@aws-sdk/client-ssm": ^3.321.1
     "@aws-sdk/lib-storage": ^3.312.0
