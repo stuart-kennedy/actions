@@ -14,7 +14,8 @@ try {
   const prefix = getInput("prefix");
 
   info("Downloading...");
-  const interval = setInterval(() => info("Still downloading..."), 10_000);
+  const timer = setInterval(() => info("Still downloading..."), 10_000);
+  timer.unref(); // Don't let the timer prevent the event loop from exiting.
 
   const s3 = new S3Client({});
   const response = await s3.send(
@@ -33,7 +34,7 @@ try {
     await asyncPipe(response.Body as Readable, writeStream);
   }
 
-  clearInterval(interval);
+  clearInterval(timer);
   info("Download complete.");
 } catch (err) {
   info("Download failed.");

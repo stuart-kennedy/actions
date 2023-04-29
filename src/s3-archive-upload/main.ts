@@ -7,6 +7,7 @@ import { S3Client, GetObjectAttributesCommand } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { create as createTar } from "tar";
 import { globby } from "globby";
+import { filterCommonPrefixes } from "../utils.ts";
 
 try {
   const bucket = getInput("bucket", { required: true });
@@ -22,9 +23,7 @@ try {
   }
 
   // Filter out directories that are common prefixes.
-  const files = paths.filter((a, i, arr) => {
-    return a.at(-1) !== "/" || !arr.some((b, j) => i !== j && b.startsWith(a) && b.length > a.length);
-  });
+  const files = filterCommonPrefixes(paths);
 
   const s3 = new S3Client({});
   const key = posix.join(prefix, name);
@@ -41,7 +40,8 @@ try {
   });
 
   info("Uploading...");
-  const interval = setInterval(() => info("Still uploading..."), 10_000);
+  const timer = setInterval(() => info("Still uploading..."), 10_000);
+  timer.unref(); // Don't let the timer prevent the event loop from exiting.
 
   const multipartUploadResponse = await upload.done();
 
@@ -61,7 +61,7 @@ try {
     debug(`getObjectAttributesResponse: ${inspect(getObjectAttributesResponse)}`);
   }
 
-  clearInterval(interval);
+  clearInterval(timer);
   info("Upload complete.");
 
   const { ObjectSize: objectSize } = getObjectAttributesResponse;

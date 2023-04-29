@@ -18,7 +18,10 @@ const config = {
 };
 
 build(config)
-  .then(() => console.info("Build completed successfully."))
+  .then(({ warnings }) => {
+    warnings.forEach(console.warn);
+    console.info("Build completed successfully.");
+  })
   .catch((err) => {
     console.error(err);
     process.exit(1);
