@@ -1,0 +1,15 @@
+name: ecr-push
+description: Push an image to an ECR repository.
+inputs:
+  repository-url:
+    description: An ECR repository URL.
+    required: true
+  image:
+    description: A local docker image.
+    required: true
+  tags:
+    description: Additional tags to apply to the image in ECR.
+    required: false
+runs:
+  using: node16
+  main: ../lib/ecr-push/main.mjs
