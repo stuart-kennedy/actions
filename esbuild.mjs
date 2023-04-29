@@ -4,6 +4,7 @@ import { globby } from "globby";
 const config = {
   bundle: true,
   minify: true,
+  sourcemap: true,
   charset: "utf8",
   entryPoints: await globby("src/*/main.ts"),
   outdir: "lib",

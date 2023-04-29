@@ -10,5 +10,13 @@
   "parserOptions": {
     "project": true
   },
-  "root": true
+  "root": true,
+  "overrides": [
+    {
+      "files": ["**/*.mjs"],
+      "parserOptions": {
+        "project": null
+      }
+    }
+  ]
 }
