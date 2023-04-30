@@ -43,10 +43,10 @@
   },
   "packageManager": "yarn@3.5.0",
   "lint-staged": {
-    "**/*.{json,yml}": [
+    "!(src/**/*)": [
       "yarn format"
     ],
-    "src/**/*.ts": [
+    "src/**/*": [
       "yarn format",
       "yarn lint"
     ]

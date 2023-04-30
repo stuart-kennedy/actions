@@ -2,3 +2,5 @@
 .husky
 .yarn
 lib
+.eslintignore
+.prettierignore
