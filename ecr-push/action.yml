@@ -10,6 +10,9 @@ inputs:
   tags:
     description: Additional tags to apply to the image in ECR.
     required: false
+  build-path:
+    description: Instead of pushing an existing image, it will first be built using this location as the build context.
+    required: false
 runs:
   using: node16
   main: ../lib/ecr-push/main.mjs

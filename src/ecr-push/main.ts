@@ -1,14 +1,17 @@
 import { execFileSync } from "node:child_process";
+import { join } from "node:path";
+import { cwd } from "node:process";
 import { inspect } from "node:util";
-import { debug, getInput, getMultilineInput, isDebug, setFailed } from "@actions/core";
+import { debug, getInput, getMultilineInput, setFailed, isDebug } from "@actions/core";
 import { ECRClient, GetAuthorizationTokenCommand, BatchGetImageCommand, PutImageCommand } from "@aws-sdk/client-ecr";
 
 const ecr = new ECRClient({});
 
 try {
-  const repositoryUrl = getInput("repository-url");
-  const image = getInput("image");
+  const repositoryUrl = getInput("repository-url", { required: true });
+  const image = getInput("image", { required: true });
   const tags = getMultilineInput("tags");
+  const buildPath = getInput("build-path") || undefined;
 
   const repositoryName = repositoryUrl.slice(repositoryUrl.lastIndexOf("/") + 1);
 
@@ -23,7 +26,16 @@ try {
 
   const imageTag = image.split(":")[1] || "latest";
   const remoteImageName = `${repositoryUrl}:${imageTag}`;
-  execFileSync("docker", ["tag", image, remoteImageName].concat(isDebug() ? ["-D"] : []), { stdio: "inherit" });
+
+  if (buildPath !== undefined) {
+    const path = join(cwd(), buildPath);
+    execFileSync("docker", ["build", "-t", remoteImageName, path].concat(isDebug() ? ["-D"] : []), {
+      stdio: "inherit",
+    });
+  } else {
+    execFileSync("docker", ["tag", image, remoteImageName].concat(isDebug() ? ["-D"] : []), { stdio: "inherit" });
+  }
+
   execFileSync("docker", ["push", remoteImageName].concat(isDebug() ? ["-D"] : []), { stdio: "inherit" });
 
   await Promise.all(

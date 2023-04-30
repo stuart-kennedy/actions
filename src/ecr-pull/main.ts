@@ -6,8 +6,8 @@ import { ECRClient, GetAuthorizationTokenCommand } from "@aws-sdk/client-ecr";
 const ecr = new ECRClient({});
 
 try {
-  const repositoryUrl = getInput("repository-url");
-  const image = getInput("image");
+  const repositoryUrl = getInput("repository-url", { required: true });
+  const image = getInput("image", { required: true });
   const tags = getMultilineInput("tags");
 
   const { user, password } = await getECRCredentials();

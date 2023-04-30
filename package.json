@@ -1,5 +1,5 @@
 {
-    "name": "qriousnz-actions",
+    "name": "@qriousnz/actions",
     "version": "1.0.32",
     "author": "qriousnz",
     "description": "GitHub actions for qriousnz.",
