@@ -1,5 +1,5 @@
 name: s3-download
-description: Download objects from a designated bucket with a provided prefix.
+description: Download files and directories at the provided path(s) from an S3 bucket.
 inputs:
   bucket:
     description: Name of the source bucket.

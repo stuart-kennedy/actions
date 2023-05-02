@@ -1,5 +1,5 @@
 name: s3-upload
-description: Upload objects to a designated bucket with a provided prefix.
+description: Upload files and directories at the provided path(s) to an S3 bucket.
 inputs:
   bucket:
     description: Name of the destination bucket.
