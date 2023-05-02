@@ -3,7 +3,7 @@ import type { GetCommandInvocationCommandOutput } from "@aws-sdk/client-ssm";
 import { setInterval, clearInterval } from "node:timers";
 import { scheduler } from "node:timers/promises";
 import { inspect } from "node:util";
-import { getBooleanInput, getInput, setOutput, setFailed, info, debug, isDebug } from "@actions/core";
+import { getBooleanInput, getInput, setOutput, setFailed, info, debug } from "@actions/core";
 import {
   SSMClient,
   DescribeInstanceInformationCommand,
@@ -49,9 +49,7 @@ try {
     })
   );
 
-  if (isDebug()) {
-    debug(`sendCommandOutput: ${inspect(sendCommandResponse)}`);
-  }
+  debug(`sendCommandOutput: ${inspect(sendCommandResponse)}`);
 
   const commandId = sendCommandResponse.Command?.CommandId;
 
@@ -107,9 +105,7 @@ async function waitSsmAgent(instanceId: string, i = 0): Promise<void> {
     })
   );
 
-  if (isDebug()) {
-    debug(`describeInstanceInformationOutput: ${inspect(response)}`);
-  }
+  debug(`describeInstanceInformationOutput: ${inspect(response)}`);
 
   if (response.InstanceInformationList?.[0]?.PingStatus !== "Online") {
     await scheduler.wait(5000);
@@ -130,9 +126,7 @@ async function waitCommandInvocationComplete(
     })
   );
 
-  if (isDebug()) {
-    debug(`getCommandInvocationOutput: ${inspect(response)}`);
-  }
+  debug(`getCommandInvocationOutput: ${inspect(response)}`);
 
   if (response.Status && ["Success", "Failed", "Cancelled", "TimedOut"].includes(response.Status)) {
     return response;
@@ -183,9 +177,7 @@ async function getLogMessages(
     })
   );
 
-  if (isDebug()) {
-    debug(`getLogEventsCommandOutput: ${inspect(response)}`);
-  }
+  debug(`getLogEventsCommandOutput: ${inspect(response)}`);
 
   const result = (response.events ?? []).map((e) => e.message).filter((m): m is string => m !== undefined);
 

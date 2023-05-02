@@ -21,9 +21,7 @@ try {
   // Filter out directories that are common prefixes.
   const uniqueKeys = filterCommonPrefixes(Array.from(new Set(keys)));
 
-  if (isDebug()) {
-    debug(`Matched S3 object keys: ${inspect(uniqueKeys)}`);
-  }
+  debug(`Matched S3 object keys: ${inspect(uniqueKeys)}`);
 
   const responseMetadata = await Promise.all(
     uniqueKeys.map(async (key) => {
@@ -43,9 +41,7 @@ try {
         })
       );
 
-      if (isDebug()) {
-        debug(`getObjectResponse: ${inspect(response)}`);
-      }
+      debug(`getObjectResponse: ${inspect(response)}`);
 
       if (response.Body !== undefined) {
         await mkdir(dirname(filepath), { recursive: true });
@@ -73,9 +69,7 @@ async function listS3Objects(bucket: string, prefix: string, continuationToken?:
     })
   );
 
-  if (isDebug()) {
-    debug(`listObjectsV2Response: ${inspect(response)}`);
-  }
+  debug(`listObjectsV2Response: ${inspect(response)}`);
 
   const result = (response.Contents ?? []).map((obj) => obj.Key ?? "").filter(Boolean);
 

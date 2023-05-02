@@ -2,7 +2,7 @@ import { join, posix } from "node:path";
 import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
 import { inspect } from "node:util";
-import { getInput, getMultilineInput, setFailed, info, debug, isDebug } from "@actions/core";
+import { getInput, getMultilineInput, setFailed, info, debug } from "@actions/core";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { globby } from "globby";
 import { filterCommonPrefixes } from "../utils.ts";
@@ -16,9 +16,7 @@ try {
 
   const paths = await globby(path, { onlyFiles: false, markDirectories: true });
 
-  if (isDebug()) {
-    debug(`Matched file system paths: ${inspect(paths)}`);
-  }
+  debug(`Matched file system paths: ${inspect(paths)}`);
 
   // Filter out directories that are common prefixes.
   const files = filterCommonPrefixes(paths);
@@ -41,9 +39,7 @@ try {
         })
       );
 
-      if (isDebug()) {
-        debug(`putObjectResponse: ${inspect(response)}`);
-      }
+      debug(`putObjectResponse: ${inspect(response)}`);
 
       const { httpStatusCode } = response.$metadata;
 

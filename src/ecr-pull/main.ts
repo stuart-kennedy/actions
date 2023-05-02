@@ -15,9 +15,7 @@ try {
     input: password,
   });
 
-  if (isDebug()) {
-    debug(dockerLoginOutput.toString("utf8"));
-  }
+  debug(dockerLoginOutput.toString("utf8"));
 
   const imageTag = image.split(":")[1] || "latest";
   const remoteImageName = `${repositoryUrl}:${imageTag}`;
@@ -36,9 +34,7 @@ try {
 
   const dockerLogoutOutput = execFileSync("docker", ["logout", repositoryUrl]);
 
-  if (isDebug()) {
-    debug(dockerLogoutOutput.toString("utf8"));
-  }
+  debug(dockerLogoutOutput.toString("utf8"));
 } catch (err) {
   if (err instanceof Error) setFailed(err);
 }
@@ -46,9 +42,7 @@ try {
 async function getECRCredentials() {
   const response = await ecr.send(new GetAuthorizationTokenCommand({}));
 
-  if (isDebug()) {
-    debug(`getAuthorizationTokenResponse: ${inspect(response)}`);
-  }
+  debug(`getAuthorizationTokenResponse: ${inspect(response)}`);
 
   const token = response.authorizationData?.[0].authorizationToken;
 
