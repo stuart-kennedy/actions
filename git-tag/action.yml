@@ -1,0 +1,15 @@
+name: git-tag
+description: Create an annotated tag in a Github repository without checking out.
+inputs:
+  token:
+    description: Your GitHub token.
+    required: true
+  tag:
+    description: The tag to create.
+    required: true
+  message:
+    description: The commit message for the tag. If not provded the tag value itself will be used.
+    required: false
+runs:
+  using: node16
+  main: ../lib/git-tag/main.mjs

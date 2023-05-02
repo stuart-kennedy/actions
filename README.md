@@ -22,6 +22,7 @@ When adding a new action, add a link to its `README.md` to the list below.
 
 ## Actions
 
+- [git-tag](git-tag/README.md) - Create an annotated tag in a Github repository without checking out.
 - [s3-upload](s3-upload/README.md) - Upload files and directories at the provided path(s) to an S3 bucket.
 - [s3-download](s3-download/README.md) - Download files and directories at the provided path(s) from an S3 bucket.
 - [s3-archive-upload](s3-archive-upload/README.md) - Create a tar archive and upload it to a designated S3 bucket.
