@@ -5,7 +5,7 @@ import { createWriteStream } from "node:fs";
 import { pipeline } from "node:stream/promises";
 import { join, posix, dirname } from "node:path";
 import { inspect } from "node:util";
-import { getInput, getMultilineInput, setFailed, info, debug, isDebug } from "@actions/core";
+import { getInput, getMultilineInput, setFailed, info, debug } from "@actions/core";
 import { S3Client, ListObjectsV2Command, GetObjectCommand } from "@aws-sdk/client-s3";
 import { filterCommonPrefixes } from "../utils.ts";
 
