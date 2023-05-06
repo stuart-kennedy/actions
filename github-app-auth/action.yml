@@ -2,14 +2,14 @@ name: github-app-auth
 description: Generate a token from an authenticated GitHub App.
 inputs:
   app-id:
-    description: GitHub App ID.
+    description: The ID of a GitHub App.
     required: true
   private-key:
-    description: Private key for the associated GitHub App.
+    description: A generated private key for the associated GitHub App.
     required: true
 outputs:
   token:
-    description: The generated app token.
+    description: The generated app installation token.
 runs:
   using: node16
   main: ../lib/github-app-auth/main.mjs
