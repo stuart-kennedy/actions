@@ -24,6 +24,7 @@
     "@aws-sdk/client-s3": "^3.321.1",
     "@aws-sdk/client-ssm": "^3.321.1",
     "@aws-sdk/lib-storage": "^3.321.1",
+    "@octokit/auth-app": "^4.0.9",
     "ansi-styles": "^6.2.1",
     "globby": "^13.1.4",
     "tar": "^6.1.13"
