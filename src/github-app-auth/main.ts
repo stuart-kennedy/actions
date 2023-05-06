@@ -1,6 +1,7 @@
 import { inspect } from "node:util";
 import { getInput, setSecret, setOutput, setFailed, debug } from "@actions/core";
 import { createAppAuth } from "@octokit/auth-app";
+import { getOctokit } from "@actions/github";
 
 try {
   const appId = getInput("app-id", { required: true });
@@ -10,9 +11,25 @@ try {
 
   const appAuthentication = await auth({ type: "app" });
 
-  debug(`appAuthentication: ${inspect(appAuthentication)}`);
+  const octokit = getOctokit(appAuthentication.token);
 
-  const token = appAuthentication.token;
+  const installations = await octokit.rest.apps.listInstallations();
+
+  const installation = installations.data.find((installation) => String(installation.app_id) === appId);
+  const installationId = installation?.id;
+
+  if (installationId === undefined) {
+    throw Error("No installation ID found for the provided GitHub App ID.");
+  }
+
+  const installationAuthentication = await auth({
+    type: "installation",
+    installationId,
+  });
+
+  debug(`appAuthentication: ${inspect(installationAuthentication)}`);
+
+  const token = installationAuthentication.token;
 
   setSecret(token);
   setOutput("token", token);
