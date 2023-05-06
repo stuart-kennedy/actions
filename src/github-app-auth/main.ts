@@ -12,7 +12,7 @@ try {
   const appAuthentication = await auth({ type: "app" });
   const octokit = getOctokit(appAuthentication.token);
 
-  const installations = await octokit.rest.apps.listInstallations();
+  const installations = await octokit.rest.apps.listInstallations({ per_page: 100 });
   const installationId = installations.data.find((installation) => String(installation.app_id) === appId)?.id;
 
   if (installationId === undefined) {
