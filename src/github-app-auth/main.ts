@@ -10,6 +10,9 @@ try {
   const auth = createAppAuth({ appId, privateKey });
 
   const appAuthentication = await auth({ type: "app" });
+
+  debug(`appAuthentication: ${inspect(appAuthentication)}`);
+
   const octokit = getOctokit(appAuthentication.token);
 
   const installations = await octokit.rest.apps.listInstallations({ per_page: 100 });
@@ -19,12 +22,11 @@ try {
     throw Error("No installation ID found for the provided GitHub App ID.");
   }
 
-  const installationAuthentication = await auth({
-    type: "installation",
-    installationId,
-  });
+  debug(`installationId: ${installationId}`);
 
-  debug(`appAuthentication: ${inspect(installationAuthentication)}`);
+  const installationAuthentication = await auth({ type: "installation", installationId });
+
+  debug(`installationAuthentication: ${inspect(installationAuthentication)}`);
 
   const token = installationAuthentication.token;
 
