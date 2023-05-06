@@ -7,6 +7,9 @@ inputs:
   private-key:
     description: Private key for the associated GitHub App.
     required: true
+outputs:
+  token:
+    description: The generated app token.
 runs:
   using: node16
   main: ../lib/github-app-auth/main.mjs
