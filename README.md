@@ -22,11 +22,12 @@ When adding a new action, add a link to its `README.md` to the list below.
 
 ## Actions
 
-- [git-tag](git-tag/README.md) - Create an annotated tag in a Github repository without checking out.
-- [s3-upload](s3-upload/README.md) - Upload files and directories at the provided path(s) to an S3 bucket.
-- [s3-download](s3-download/README.md) - Download files and directories at the provided path(s) from an S3 bucket.
-- [s3-archive-upload](s3-archive-upload/README.md) - Create a tar archive and upload it to a designated S3 bucket.
-- [s3-archive-download](s3-archive-download/README.md) - Download and extract an archive uploaded using s3-archive-upload.
+- [ecr-pull](ecr-pull/README.md) - Pull a Docker image from ECR.
 - [ecr-push](ecr-push/README.md) - Push a Docker image to ECR.
-- [ecr-pull](ecr-push/README.md) - Pull a Docker image from ECR.
+- [git-tag](git-tag/README.md) - Create an annotated tag in a Github repository without checking out.
+- [github-app-auth](github-app-auth/README.md) - Generate a GitHub App installation token.
+- [s3-archive-download](s3-archive-download/README.md) - Download and extract an archive uploaded using s3-archive-upload.
+- [s3-archive-upload](s3-archive-upload/README.md) - Create a tar archive and upload it to a designated S3 bucket.
+- [s3-download](s3-download/README.md) - Download files and directories at the provided path(s) from an S3 bucket.
+- [s3-upload](s3-upload/README.md) - Upload files and directories at the provided path(s) to an S3 bucket.
 - [ssm-send-command](ssm-send-command/README.md) - Execute shell commands on an EC2 instance remotely.
