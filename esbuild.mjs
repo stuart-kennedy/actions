@@ -20,7 +20,7 @@ const config = {
   format: "esm",
   platform: "node",
   target: "node16",
-  mainFields: ["module", "main"],
+  mainFields: ["main"],
   banner: {
     js: 'import { createRequire } from "module";const require = createRequire(import.meta.url);',
   },
