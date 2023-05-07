@@ -24,7 +24,13 @@ try {
 
   debug(`installationId: ${installationId}`);
 
-  const installationAuthentication = await auth({ type: "installation", installationId });
+  const installationAuthentication = await auth({
+    type: "installation",
+    installationId,
+    permissions: {
+      contents: "write",
+    },
+  });
 
   debug(`installationAuthentication: ${inspect(installationAuthentication)}`);
 
