@@ -36,38 +36,40 @@ try {
 
   execFileSync("docker", ["push", remoteImageName].concat(isDebug() ? ["-D"] : []), { stdio: "inherit" });
 
-  await Promise.all(
+   await Promise.all(
     tags.map(async (tag) => {
-      const [pushedImage, newTagImage] = await Promise.all(
-        [imageTag, tag].map(async (t) => {
-          const response = await ecr.send(
-            new BatchGetImageCommand({
-              repositoryName,
-              imageIds: [{ imageTag: t }],
-            })
-          );
-
-          debug(`batchGetImageResponse: ${inspect(response)}`);
-
-          return response;
+      const batchGetImageResponse = await ecr.send(
+        new BatchGetImageCommand({
+          repositoryName,
+          imageIds: [{ imageTag }, { imageTag: tag }],
         })
       );
 
-      const pushedImageDigest = pushedImage.images?.[0]?.imageId?.imageDigest;
-      const newTagImageDigest = newTagImage.images?.[0]?.imageId?.imageDigest;
+      debug(`batchGetImageResponse: ${inspect(batchGetImageResponse)}`);
 
-      if (pushedImageDigest && pushedImageDigest !== newTagImageDigest) {
-        const response = await ecr.send(
+      const pushedImage = batchGetImageResponse.images?.find((image) => {
+        return image.imageId?.imageTag === imageTag;
+      });
+
+      const newTagImage = batchGetImageResponse.images?.find((image) => {
+        return image.imageId?.imageTag === tag;
+      });
+
+      const pushedImageDigest = pushedImage?.imageId?.imageDigest;
+      const newImageTagDigest = newTagImage?.imageId?.imageDigest;
+
+      if (pushedImageDigest && pushedImageDigest !== newImageTagDigest) {
+        const putImageResponse = await ecr.send(
           new PutImageCommand({
             repositoryName,
+            imageManifest: pushedImage.imageManifest,
             imageTag: tag,
-            imageManifest: pushedImage.images?.[0].imageManifest,
           })
         );
 
-        debug(`putImageResponse: ${inspect(response)}`);
+        debug(`putImageResponse: ${inspect(putImageResponse)}`);
 
-        return response;
+        return putImageResponse;
       }
     })
   );
